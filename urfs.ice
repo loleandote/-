@@ -39,15 +39,5 @@ module URFS {
 
     void replyNewFrontend(Frontend* oldFrontend);
   };
-  interface Frontend {
-    string write(string message);
-    sa list();
-    FileUploader* uploadFile(string file);
-    FileDownloader* downloadFile(string file);
-    void prueba(bites baits);
-  };
-  interface FileManager{
-    FileUploader* createUploader(string file);
-    FileDownloader* createDownloader(string file);
-  };
+  
 };

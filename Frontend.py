@@ -8,7 +8,7 @@ Ice.loadSlice('urfs.ice')
 import URFS
 
 
-class FrontendI(ServerSide.Frontend):
+class FrontendI(URFS.Frontend):
     n = 0
     def __init__(self, fileManager):
             self.fileManager = fileManager
@@ -38,7 +38,7 @@ class Frontend(Ice.Application):
         broker = self.communicator()
         
         proxy = self.communicator().stringToProxy('FileManager -t -e 1.1:tcp -h 172.28.202.67 -p 7071 -t 60000')
-        fileManager = ServerSide.FileManagerPrx.checkedCast(proxy)
+        fileManager = URFS.FileManagerPrx.checkedCast(proxy)
         servant = FrontendI(fileManager)
 
         adapter = broker.createObjectAdapter("FrontendAdapter")
