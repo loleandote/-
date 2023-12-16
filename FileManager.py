@@ -3,6 +3,7 @@
 import sys
 import Ice
 import os
+from FileDownloader import FileDownloaderI
 import FileUploader
 Ice.loadSlice('Frontend.ice')
 import ServerSide
@@ -15,11 +16,16 @@ class FileManagerI(ServerSide.FileManager):
         print("Holas")
     def createUploader(self, file, current=None):
         print(f"Uploading {file} to the cloud")
+        return "hola"
+    def createDownloader(self, file, current):
+        servant = FileDownloaderI(file)
+        proxy = current.adapter.addWithUUID(servant)
+        return ServerSide.FileDownloaderPrx.checkedCast(proxy)
+        
 class FileManager(Ice.Application):
     def run(self, argv):
         broker = self.communicator()
-        servant = FileManagerI(argv)
-
+        servant = FileManagerI(argv[1])
         adapter = broker.createObjectAdapter("FileManagerAdapter")
         proxy = adapter.add(servant, broker.stringToIdentity("FileManager"))
 
@@ -32,5 +38,5 @@ class FileManager(Ice.Application):
         return 0
 
 
-fileManager = FileManager(sys.argv[2])
+fileManager = FileManager()
 sys.exit(fileManager.main(sys.argv))
