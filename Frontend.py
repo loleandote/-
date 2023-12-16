@@ -9,7 +9,7 @@ import URFS
 
 
 class FrontendI(URFS.Frontend):
-    n = 0
+    #n = 0
     # def __init__(self, fileManager):
     #         self.fileManager = fileManager
     def getFileList(self, current=None):
