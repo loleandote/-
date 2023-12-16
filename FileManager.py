@@ -3,12 +3,12 @@
 import sys
 import Ice
 import os
-import FileUploader
-Ice.loadSlice('Frontend.ice')
-import ServerSide
+import Uploader
+Ice.loadSlice('urfs.ice')
+import URFS
 
 
-class FileManagerI(ServerSide.FileManager):
+class FileManagerI(URFS.FileManager):
     
     def __init__(self, carpeta):
         self.carpeta = carpeta

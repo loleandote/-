@@ -2,17 +2,17 @@ import sys
 import Ice
 import os
 
-Ice.loadSlice('Frontend.ice')
-import ServerSide
-class FileUploaderI(ServerSide.FileUploader):
+Ice.loadSlice('urfs.ice')
+import URFS
+class UploaderI(URFS.Uploader):
     def __init__(self, file_path):
         self.file_path = file_path
 
-    def upload(self):
+    def send(self):
         print(f"Uploading {self.file_path} to the cloud")
-class FileUploader:
+class Uploader:
     def __init__(self, file_path):
         self.file_path = file_path
 
-    def upload(self):
+    def send(self):
         print(f"Uploading {self.file_path} to the cloud")

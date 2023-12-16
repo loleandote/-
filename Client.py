@@ -2,15 +2,15 @@
 
 import sys
 import Ice
-Ice.loadSlice('Frontend.ice')
-import ServerSide
+Ice.loadSlice('urfs.ice')
+import URFS
 
 
 class Client(Ice.Application):
     def run(self, argv):
         proxy = self.communicator().stringToProxy(argv[1])
         print(argv[1])
-        printer = ServerSide.FrontendPrx.checkedCast(proxy)
+        printer = URFS.FrontendPrx.checkedCast(proxy)
 
         if not printer:
             raise RuntimeError('Invalid proxy')
