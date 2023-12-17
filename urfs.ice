@@ -9,7 +9,7 @@ module URFS {
     string hash;
   };
   sequence<FileInfo> FileList;
- interface Uploader {
+  interface Uploader {
     void send(string data);
     FileInfo save()
       throws FileAlreadyExistsError;

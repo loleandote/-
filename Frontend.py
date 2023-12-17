@@ -9,18 +9,15 @@ import URFS
 
 
 class FrontendI(URFS.Frontend):
-    #n = 0
     # def __init__(self, fileManager):
     #         self.fileManager = fileManager
     def getFileList(self, current=None):
-        #sys.stdout.flush()
         archivos=os.listdir('./')
         lista=[]
         for archivo in archivos:
             lista.append(URFS.FileInfo(archivo,archivo))
         return lista
     def uploadFile(self, file, current=None):
-        
         return self.fileManager.createUploader(file)
     def downloadFile(self, file, current=None):
          return self.fileManager.createDownloader(file)
