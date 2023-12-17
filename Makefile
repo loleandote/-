@@ -26,8 +26,8 @@ run-client:
 	python3 ./Client.py '$(shell head -1 proxy.out)'
 test-client:
 	mkdir -p downloads
-#./Client.py --Ice.Config=client.config --upload $(FILE)
-	./Client.py --Ice.Config=client.config --list
+	python3 ./Client.py --Ice.Config=client.config --upload $(FILE)
+	python3 ./Client.py --Ice.Config=client.config --list
 #./Client.py --Ice.Config=client.config --download $(FILE_HASH)
 #./Client.py --Ice.Config=client.config --remove $(FILE_HASH)
 #./Client.py --Ice.Config=client.config --list

@@ -50,6 +50,8 @@ class Client(Ice.Application):
         # for f in ficheros:
         #     print(f)
         return 0
+    
+    # llama bien a la funcion listFiles del frontend
     def list_request(self):
         archivos = self.frontend.listFiles()
         for archivo in archivos:
@@ -94,7 +96,7 @@ class Client(Ice.Application):
                 file_hash.write(data)
         downloader.destroy()
         print('Download finished!', flush=True)
-
+    # No probado en ninguna versión
     def remove_file(self, file_hash):
         try:
             self.frontend.removeFile(file_hash)

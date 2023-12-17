@@ -12,8 +12,8 @@ import URFS
 
 class FileManagerI(URFS.FileManager):
     
-    def __init__(self, carpeta):
-        self.carpeta = carpeta
+    # def __init__(self, carpeta):
+    #     self.carpeta = carpeta
     def createUploader(self, filename, current):
         servant = UploaderI(filename)
         proxy = current.adapter.addWithUUID(servant)
@@ -26,7 +26,7 @@ class FileManagerI(URFS.FileManager):
 class FileManager(Ice.Application):
     def run(self, argv):
         broker = self.communicator()
-        servant = FileManagerI(argv[1])
+        servant = FileManagerI()
         adapter = broker.createObjectAdapter("FileManagerAdapter")
         proxy = adapter.add(servant, broker.stringToIdentity("FileManager"))
 
