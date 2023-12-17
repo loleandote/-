@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-
+#A la hora de entregar eliminar el comando python3
 NUM_FILEMANAGERS ?= 1
 FILE ?= example.png
 FILE_HASH ?= $(shell md5sum $(FILE) | cut -d' ' -f1)
@@ -27,7 +27,7 @@ run-client:
 test-client:
 	mkdir -p downloads
 	python3 ./Client.py --Ice.Config=client.config --upload $(FILE)
-	python3 ./Client.py --Ice.Config=client.config --list
+#python3 ./Client.py --Ice.Config=client.config --list
 #./Client.py --Ice.Config=client.config --download $(FILE_HASH)
 #./Client.py --Ice.Config=client.config --remove $(FILE_HASH)
 #./Client.py --Ice.Config=client.config --list

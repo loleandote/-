@@ -16,7 +16,8 @@ class Client(Ice.Application):
         # properties = ic.getProperties()
         # proxy_string = properties.getProperty('Frontend.Proxy')
         # proxy = ic.stringToProxy(proxy_string)
-        proxy = self.communicator().stringToProxy('Frontend -t -e 1.1:tcp -h 172.28.202.67 -p 7070 -t 60000')
+        #proxy = self.communicator().stringToProxy('Frontend -t -e 1.1:tcp -h 172.28.202.67 -p 7070 -t 60000')
+        proxy = self.communicator().stringToProxy('Frontend -t -e 1.1:tcp -h 172.25.72.183 -p 7070 -t 60000')
         self.frontend = URFS.FrontendPrx.checkedCast(proxy)
        
 
@@ -30,6 +31,7 @@ class Client(Ice.Application):
             self.download_request(ARGS.download)
 
         if ARGS.upload:
+            print("Uploading")
             self.upload_request(ARGS.upload)
 
         if ARGS.remove:
@@ -53,34 +55,36 @@ class Client(Ice.Application):
     
     # llama bien a la funcion listFiles del frontend
     def list_request(self):
-        archivos = self.frontend.listFiles()
+        archivos = self.frontend.getFileList()
         for archivo in archivos:
             print(f'{archivo.name}: {archivo.hash}', flush=True)
     # No seguro
     def upload_request(self, file_name):
+        print("Hola")
         try:
+            print(f'Uploading {file_name} to the cloud', flush=True)
             uploader = self.frontend.uploadFile(file_name)
         except URFS.FileNameInUseError:
             print('File name already in use', flush=True)
             return
-        with open(file_name, 'rb') as _file:
-            while True:
-                data = _file.read(BLOCK_SIZE)
-                if not data:
-                    break
-                data = str(binascii.b2a_base64(data, newline=False))
-                uploader.send(data)
+        # with open(file_name, 'rb') as _file:
+        #     while True:
+        #         data = _file.read(BLOCK_SIZE)
+        #         if not data:
+        #             break
+        #         data = str(binascii.b2a_base64(data, newline=False))
+        #         uploader.send(data)
 
-        try:
-            file_info = uploader.save()
-        except URFS.FileAlreadyExistsError as e:
-            print(f'File already exists: {e.hash}', flush=True)
-            uploader.destroy()
-            return
+        # try:
+        #     file_info = uploader.save()
+        # except URFS.FileAlreadyExistsError as e:
+        #     print(f'File already exists: {e.hash}', flush=True)
+        #     uploader.destroy()
+        #     return
 
-        uploader.destroy()
-        print('Upload finished!', flush=True)
-        print(f'{file_info.name}: {file_info.hash}', flush=True)
+        # uploader.destroy()
+        # print('Upload finished!', flush=True)
+        # print(f'{file_info.name}: {file_info.hash}', flush=True)
     # Todavia hay que comprobarlo
     def download_request(self, file_hash):
         try:

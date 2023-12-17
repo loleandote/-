@@ -1,5 +1,5 @@
 import Ice
-Ice.loadSlice('ufs.ice')
+Ice.loadSlice('urfs.ice')
 import URFS
 
 class DownloaderI(URFS.Downloader):
