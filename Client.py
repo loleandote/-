@@ -16,8 +16,8 @@ class Client(Ice.Application):
         # properties = ic.getProperties()
         # proxy_string = properties.getProperty('Frontend.Proxy')
         # proxy = ic.stringToProxy(proxy_string)
-        #proxy = self.communicator().stringToProxy('Frontend -t -e 1.1:tcp -h 172.28.202.67 -p 7070 -t 60000')
-        proxy = self.communicator().stringToProxy('Frontend -t -e 1.1:tcp -h 172.25.72.183 -p 7070 -t 60000')
+        proxy = self.communicator().stringToProxy('Frontend -t -e 1.1:tcp -h 172.28.202.67 -p 7070 -t 60000')
+        #proxy = self.communicator().stringToProxy('Frontend -t -e 1.1:tcp -h 172.25.72.183 -p 7070 -t 60000')
         self.frontend = URFS.FrontendPrx.checkedCast(proxy)
        
 
@@ -67,13 +67,16 @@ class Client(Ice.Application):
         except URFS.FileNameInUseError:
             print('File name already in use', flush=True)
             return
-        # with open(file_name, 'rb') as _file:
-        #     while True:
-        #         data = _file.read(BLOCK_SIZE)
-        #         if not data:
-        #             break
-        #         data = str(binascii.b2a_base64(data, newline=False))
-        #         uploader.send(data)
+        with open(file_name, 'rb') as _file:
+            while True:
+                data = _file.read(BLOCK_SIZE)
+                if not data:
+                    break
+                
+                #print(data)
+                data = str(binascii.b2a_base64(data, newline=False))
+                
+                uploader.send(data=data)
 
         # try:
         #     file_info = uploader.save()
@@ -82,27 +85,33 @@ class Client(Ice.Application):
         #     uploader.destroy()
         #     return
 
-        # uploader.destroy()
-        # print('Upload finished!', flush=True)
-        # print(f'{file_info.name}: {file_info.hash}', flush=True)
+        uploader.destroy()
+        print('Upload finished!', flush=True)
+        #print(f'{file_info.name}: {file_info.hash}', flush=True)
     # Todavia hay que comprobarlo
     def download_request(self, file_hash):
         try:
-            downloader = self.frontend.dowloadFile(file_hash)
+            file_hash='example.png'
+            downloader = self.frontend.downloadFile(file_hash)
         except URFS.FileNameInUseError:
             print('File hash already in use', flush=True)
             return
-        with open(file_hash, 'wb') as _file:
+        archivo='cliente/'+file_hash
+        print(archivo)
+        with open(archivo, 'wb') as file:
             while True:
-                data =  downloader.recv(data)
-                if not data:
+                data = downloader.recv(BLOCK_SIZE)
+                if data=="b''":
                     break
-                file_hash.write(data)
+                data = data[1:]
+                data= binascii.a2b_base64(data)
+                file.write(data)
         downloader.destroy()
         print('Download finished!', flush=True)
     # No probado en ninguna versión
     def remove_file(self, file_hash):
         try:
+            file_hash='example.png'
             self.frontend.removeFile(file_hash)
         except URFS.FileNotFoundError:
             print('File not found', flush=True)

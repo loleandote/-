@@ -28,10 +28,26 @@ test-client:
 	mkdir -p downloads
 	python3 ./Client.py --Ice.Config=client.config --upload $(FILE)
 #python3 ./Client.py --Ice.Config=client.config --list
-#./Client.py --Ice.Config=client.config --download $(FILE_HASH)
-#./Client.py --Ice.Config=client.config --remove $(FILE_HASH)
+	python3 ./Client.py --Ice.Config=client.config --download $(FILE_HASH)
+	python3 ./Client.py --Ice.Config=client.config --remove $(FILE_HASH)
 #./Client.py --Ice.Config=client.config --list
 #./Client.py '$(shell head -1 proxy.out)'
 
 gen-src:
-	slice2py Frontend.ice
+	slice2py urfs.ice
+
+run-icestorm:
+	mkdir -p IceStorm/
+	icebox --Ice.Config=icebox.config
+
+run-registry:
+	mkdir -p data/db/registry
+	icegridregistry --Ice.Config=registry.config
+
+clean:
+	$(RM) -r downloads/ storage/ __pycache__/ URFS/
+	$(RM) urfs_ice.py *.pyc
+
+vclean: clean
+	$(RM) -r IceStorm/ data/
+

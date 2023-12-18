@@ -22,7 +22,9 @@ class FileManagerI(URFS.FileManager):
         servant = DownloaderI(hash)
         proxy = current.adapter.addWithUUID(servant)
         return URFS.DownloaderPrx.checkedCast(proxy)
-        
+    def removeFile(self, hash, current=None):
+        os.remove('storage/'+hash)
+        print(f"Removing {hash} from the cloud")
 class FileManager(Ice.Application):
     def run(self, argv):
         broker = self.communicator()
