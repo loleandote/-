@@ -11,8 +11,6 @@ start:
 	$(MAKE) run-filemanager &
 	sleep 1
 	$(MAKE) run-frontend
-clean:
-	$(RM) -r *~ proxy.out Printer_ice.py Example/
 
 run-frontend:
 	python3 ./Frontend.py --Ice.Config=frontend1.config $(NUM_FILEMANAGERS)
@@ -29,7 +27,7 @@ test-client:
 	python3 ./Client.py --Ice.Config=client.config --upload $(FILE)
 #python3 ./Client.py --Ice.Config=client.config --list
 	python3 ./Client.py --Ice.Config=client.config --download $(FILE_HASH)
-	python3 ./Client.py --Ice.Config=client.config --remove $(FILE_HASH)
+#	python3 ./Client.py --Ice.Config=client.config --remove $(FILE_HASH)
 #./Client.py --Ice.Config=client.config --list
 #./Client.py '$(shell head -1 proxy.out)'
 

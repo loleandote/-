@@ -27,14 +27,12 @@ class FrontendI(URFS.Frontend):
 class Frontend(Ice.Application):
     def run(self, argv):
         broker = self.communicator()
-        
-        proxy = self.communicator().stringToProxy('FileManager -t -e 1.1:tcp -h 172.28.202.67 -p 7071 -t 60000')
+        proxy = broker.stringToProxy('filemanager1 -t -e 1.1 @ FileManagerAdapter')
         #proxy = self.communicator().stringToProxy('FileManager -t -e 1.1:tcp -h 172.25.72.183 -p 7071 -t 60000')
         fileManager = URFS.FileManagerPrx.checkedCast(proxy)
         servant = FrontendI(fileManager)
-        #servant = FrontendI()
         adapter = broker.createObjectAdapter("FrontendAdapter")
-        proxy = adapter.add(servant, broker.stringToIdentity("Frontend"))
+        proxy = adapter.add(servant, broker.stringToIdentity("frontend1"))
         print(proxy, flush=True)
 
         adapter.activate()

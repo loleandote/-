@@ -30,7 +30,7 @@ class FileManager(Ice.Application):
         broker = self.communicator()
         servant = FileManagerI()
         adapter = broker.createObjectAdapter("FileManagerAdapter")
-        proxy = adapter.add(servant, broker.stringToIdentity("FileManager"))
+        proxy = adapter.add(servant, broker.stringToIdentity("filemanager1"))
 
         print(proxy, flush=True)
 

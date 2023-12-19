@@ -12,15 +12,9 @@ BLOCK_SIZE = 1024
 
 class Client(Ice.Application):
     def run(self, argv):
-        ic = self.communicator()
-        # properties = ic.getProperties()
-        # proxy_string = properties.getProperty('Frontend.Proxy')
-        # proxy = ic.stringToProxy(proxy_string)
-        proxy = self.communicator().stringToProxy('Frontend -t -e 1.1:tcp -h 172.28.202.67 -p 7070 -t 60000')
-        #proxy = self.communicator().stringToProxy('Frontend -t -e 1.1:tcp -h 172.25.72.183 -p 7070 -t 60000')
+        proxy = self.communicator().stringToProxy('frontend1 -t -e 1.1 @ FrontendAdapter')
         self.frontend = URFS.FrontendPrx.checkedCast(proxy)
        
-
         if not self.frontend:
             raise RuntimeError('Invalid proxy')
 
@@ -31,26 +25,11 @@ class Client(Ice.Application):
             self.download_request(ARGS.download)
 
         if ARGS.upload:
-            print("Uploading")
             self.upload_request(ARGS.upload)
 
         if ARGS.remove:
             self.remove_file(ARGS.remove)
-            
-       
-        #frontend.prueba(bites)
-        # downloader=frontend.downloadFile("holawkf")
-        # bytes= 1024
-        # resultado=[]
-        # i=0
-        # while i<3:
-        #     resultado.append(downloader.download())
-        #     bytes=len(resultado)
-        #     i+=1
-        # print(resultado)
-        # downloader.destroy()
-        # for f in ficheros:
-        #     print(f)
+
         return 0
     
     # llama bien a la funcion listFiles del frontend
@@ -60,7 +39,6 @@ class Client(Ice.Application):
             print(f'{archivo.name}: {archivo.hash}', flush=True)
     # No seguro
     def upload_request(self, file_name):
-        print("Hola")
         try:
             print(f'Uploading {file_name} to the cloud', flush=True)
             uploader = self.frontend.uploadFile(file_name)
@@ -96,7 +74,7 @@ class Client(Ice.Application):
         except URFS.FileNameInUseError:
             print('File hash already in use', flush=True)
             return
-        archivo='cliente/'+file_hash
+        archivo='downloads/'+file_hash
         print(archivo)
         with open(archivo, 'wb') as file:
             while True:
@@ -108,7 +86,6 @@ class Client(Ice.Application):
                 file.write(data)
         downloader.destroy()
         print('Download finished!', flush=True)
-    # No probado en ninguna versión
     def remove_file(self, file_hash):
         try:
             file_hash='example.png'
