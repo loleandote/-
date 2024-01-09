@@ -16,16 +16,19 @@ class FrontendI(URFS.Frontend):
         lista=[]
         for archivo in archivos:
             lista.append(URFS.FileInfo(archivo,archivo))
-        return lista
+        return self.filelist
     def uploadFile(self, file, current=None):
         return self.fileManager.createUploader(file)
     def downloadFile(self, file, current=None):
          return self.fileManager.createDownloader(file)
     def removeFile(self, file, current=None):
-        self.fileManager.removeFile(file)
+        archivo =(x for x in self.fileManager if x.hash == file)
+        self.filelist.remove(archivo)
+        self.fileManager.removeFile(archivo)
 
 class Frontend(Ice.Application):
     def run(self, argv):
+        filelist=[]
         broker = self.communicator()
         proxy = broker.stringToProxy('filemanager1 -t -e 1.1 @ FileManagerAdapter')
         #proxy = self.communicator().stringToProxy('FileManager -t -e 1.1:tcp -h 172.25.72.183 -p 7071 -t 60000')

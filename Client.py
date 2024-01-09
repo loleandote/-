@@ -55,13 +55,8 @@ class Client(Ice.Application):
                 data = str(binascii.b2a_base64(data, newline=False))
                 
                 uploader.send(data=data)
-
-        # try:
-        #     file_info = uploader.save()
-        # except URFS.FileAlreadyExistsError as e:
-        #     print(f'File already exists: {e.hash}', flush=True)
-        #     uploader.destroy()
-        #     return
+        archivo=uploader.save()
+        self.frontend.filelist.append(archivo)
 
         uploader.destroy()
         print('Upload finished!', flush=True)
