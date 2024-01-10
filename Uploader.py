@@ -10,15 +10,16 @@ class UploaderI(URFS.Uploader):
         self.fichero=open('storage/'+self.file, 'wb')
 
     def send(self, data, current=None):
-        archivo ='storage/'+self.file
+        #archivo ='storage/'+self.file
         data = data[1:]
         data= binascii.a2b_base64(data)
         self.fichero.write(data)
         print(f"Uploading {self.file} to the cloud")
-    
+
     def save(self, current=None):
         print(f"Saving {self.file} to the cloud")
-        return URFS.FileInfo(self.file, hashlib.md5(self.fichero))
+        return URFS.FileInfo("","")
+        #return URFS.FileInfo(self.file, hashlib.md5(self.fichero).hexdigest())
 
     def destroy(self, current):
         print(f"Destroying {self.file}")

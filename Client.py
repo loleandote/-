@@ -37,6 +37,7 @@ class Client(Ice.Application):
         archivos = self.frontend.getFileList()
         for archivo in archivos:
             print(f'{archivo.name}: {archivo.hash}', flush=True)
+        print(len(archivos))
     # No seguro
     def upload_request(self, file_name):
         try:
@@ -55,6 +56,7 @@ class Client(Ice.Application):
                 data = str(binascii.b2a_base64(data, newline=False))
                 
                 uploader.send(data=data)
+        #uploader.save()
         archivo=uploader.save()
         self.frontend.filelist.append(archivo)
 

@@ -38,6 +38,7 @@ run-registry:
 clean:
 	$(RM) -r downloads/ storage/ __pycache__/ URFS/
 	$(RM) urfs_ice.py *.pyc
-
+    find . -type f | xargs touch
+    rm -rf $(OBJS)
 vclean: clean
 	$(RM) -r IceStorm/ data/

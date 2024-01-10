@@ -11,6 +11,7 @@ import URFS
 class FrontendI(URFS.Frontend):
     def __init__(self, fileManager):
             self.fileManager = fileManager
+            self.filelist=[]
     def getFileList(self, current=None):
         archivos=os.listdir('./')
         lista=[]
@@ -25,10 +26,8 @@ class FrontendI(URFS.Frontend):
         archivo =(x for x in self.fileManager if x.hash == file)
         self.filelist.remove(archivo)
         self.fileManager.removeFile(archivo)
-
 class Frontend(Ice.Application):
     def run(self, argv):
-        filelist=[]
         broker = self.communicator()
         proxy = broker.stringToProxy('filemanager1 -t -e 1.1 @ FileManagerAdapter')
         #proxy = self.communicator().stringToProxy('FileManager -t -e 1.1:tcp -h 172.25.72.183 -p 7071 -t 60000')
