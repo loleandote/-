@@ -18,8 +18,7 @@ class UploaderI(URFS.Uploader):
 
     def save(self, current=None):
         print(f"Saving {self.file} to the cloud")
-        return URFS.FileInfo("","")
-        #return URFS.FileInfo(self.file, hashlib.md5(self.fichero).hexdigest())
+        return URFS.FileInfo(self.file, hashlib.md5(open(self.file,'rb').read()).hexdigest())
 
     def destroy(self, current):
         print(f"Destroying {self.file}")

@@ -4,6 +4,7 @@ import sys
 import binascii
 
 import Ice
+import IceStorm
 import argparse
 
 Ice.loadSlice('urfs.ice')
@@ -37,7 +38,6 @@ class Client(Ice.Application):
         archivos = self.frontend.getFileList()
         for archivo in archivos:
             print(f'{archivo.name}: {archivo.hash}', flush=True)
-        print(len(archivos))
     # No seguro
     def upload_request(self, file_name):
         try:
@@ -56,10 +56,23 @@ class Client(Ice.Application):
                 data = str(binascii.b2a_base64(data, newline=False))
                 
                 uploader.send(data=data)
+            
         #uploader.save()
+        
         archivo=uploader.save()
-        self.frontend.filelist.append(archivo)
+        topic_mgr = self.get_topic_manager()
+        if not topic_mgr:
+            print('Invalid proxy')
+            return 2
 
+        topic_name = "UploaderTopic"
+        try:
+            topic = topic_mgr.create(topic_name)
+        except IceStorm.TopicExists:
+            topic = topic_mgr.retrieve(topic_name)
+
+        publisher = topic.getPublisher()
+        #self.frontend.filelist.append(archivo)
         uploader.destroy()
         print('Upload finished!', flush=True)
         #print(f'{file_info.name}: {file_info.hash}', flush=True)
@@ -91,6 +104,15 @@ class Client(Ice.Application):
             print('File not found', flush=True)
             return
         print('File removed', flush=True)
+    def get_topic_manager(self):
+        key = 'IceStorm.TopicManager.Proxy'
+        proxy = self.communicator().propertyToProxy(key)
+        if proxy is None:
+            print("property {} not set".format(key))
+            return None
+
+        print("Using IceStorm in: '%s'" % key)
+        return IceStorm.TopicManagerPrx.checkedCast(proxy)
 if __name__ == '__main__':
     my_parser = argparse.ArgumentParser()
     my_group = my_parser.add_mutually_exclusive_group(required=False)
