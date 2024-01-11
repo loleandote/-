@@ -12,10 +12,8 @@ class DownloaderI(URFS.Downloader):
     def recv(self,size, current=None):
         data=None
         data = self.fichero.read(size)
-        print(data)
         data = str(binascii.b2a_base64(data, newline=False))
-        print(f"Downloading {self.file} from the cloud")
         return data
     def destroy(self, current):
+        print(f"Destroying {current.id}")
         current.adapter.remove(current.id)
-        print(f'{self.file} destroyed', flush=True)

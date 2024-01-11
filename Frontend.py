@@ -14,14 +14,13 @@ class FrontendI(URFS.Frontend):
             self.fileManager = fileManager
             self.filelist=[]
     def getFileList(self, current=None):
-        archivos=os.listdir('./')
-        lista=[]
-        print("hoas")
-        print(len(self.filelist))
-        for archivo in self.filelist:
-             print(archivo)
-        for archivo in archivos:
-            lista.append(URFS.FileInfo(archivo,archivo))
+        # archivos=os.listdir('./')
+        # lista=[]
+        # print(len(self.filelist))
+        # for archivo in self.filelist:
+        #      print(archivo)
+        # for archivo in archivos:
+        #     lista.append(URFS.FileInfo(archivo,archivo))
         return self.filelist
     def uploadFile(self, file, current=None):
         return self.fileManager.createUploader(file)

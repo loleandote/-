@@ -1,0 +1,12 @@
+Client
+· Cambiar las lineas 15-20 por la linea 17
+· Añadir en la linea 7 la linea 7
+Frontend
+· Cambiar las lineas 30,31 por la linea 53
+· Cambiar el contenido del meodoto getFileList por el de la linea 16 solo el return
+· Añadir al constructor la linea 15
+FileManager
+· Cambiar la linea 33 por la linea 33
+
+Cambiar todo el contenido de los ficheros .config
+Añadir Registry.config, icestorm.config, icebox.config

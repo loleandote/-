@@ -5,7 +5,6 @@ from Downloader import DownloaderI
 from Uploader import UploaderI
 import Ice
 import os
-import Uploader
 Ice.loadSlice('urfs.ice')
 import URFS
 
@@ -17,9 +16,11 @@ class FileManagerI(URFS.FileManager):
     def createUploader(self, filename, current):
         servant = UploaderI(filename)
         proxy = current.adapter.addWithUUID(servant)
+        print(f"Uploading {filename} to the cloud")
         return URFS.UploaderPrx.checkedCast(proxy)
     def createDownloader(self, hash, current):
         servant = DownloaderI(hash)
+        print(f"Downloading {hash} from the cloud")
         proxy = current.adapter.addWithUUID(servant)
         return URFS.DownloaderPrx.checkedCast(proxy)
     def removeFile(self, hash, current=None):

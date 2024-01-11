@@ -12,18 +12,18 @@ start:
 	sleep 1
 	$(MAKE) run-frontend
 
-run-frontend:
-	python3 ./Frontend.py --Ice.Config=frontend1.config $(NUM_FILEMANAGERS)
-
 run-fileManager:
 	mkdir -p storage
 	python3 ./FileManager.py --Ice.Config=filemanager1.config 
+
+run-frontend:
+	python3 ./Frontend.py --Ice.Config=frontend1.config $(NUM_FILEMANAGERS)
 
 test-client:
 	mkdir -p downloads
 	python3 ./Client.py --Ice.Config=client.config --upload $(FILE)
 	python3 ./Client.py --Ice.Config=client.config --list
-#	./Client.py --Ice.Config=client.config --download $(FILE_HASH)
+	python3 ./Client.py --Ice.Config=client.config --download $(FILE_HASH)
 #	./Client.py --Ice.Config=client.config --remove $(FILE_HASH)
 #	./Client.py --Ice.Config=client.config --list
 
@@ -38,8 +38,6 @@ run-registry:
 clean:
 	$(RM) -r downloads/ storage/ __pycache__/ URFS/
 	$(RM) urfs_ice.py *.pyc
-#    find . -type f | xargs touch
-#    rm -rf $(OBJS)
 vclean: clean
 	$(RM) -r IceStorm/ data/
 
